@@ -433,20 +433,11 @@ AddEventHandler('d-jobcreator:spawnVehicle', function(data)
 
 
     if not IsModelInCdimage(vehicleModel) or not IsModelAVehicle(vehicleModel) then
-        lib.notify({
-            title = 'Error',
-            description = 'Model vozila ne postoji!',
-            type = 'error'
-        })
+        sendNotification("error", locale('model_doesnt_exist'), 5000)
         return
     end
 
     if IsPedInAnyVehicle(PlayerPedId()) then
-        lib.notify({
-            title = 'Error',
-            description = 'Vec ste u vozilu, to nece moci tako!!',
-            type = 'error'
-        })
         return
     end
 
@@ -457,29 +448,15 @@ AddEventHandler('d-jobcreator:spawnVehicle', function(data)
         ESX.Game.SpawnVehicle(vehicleModel, spawnpoint, heading, function(vehicle)
             if DoesEntityExist(vehicle) then
                 TaskWarpPedIntoVehicle(playerPed, vehicle, -1)
-                lib.notify({
-                    title = 'Vozilo Spawnovano',
-                    description = 'Uspješno ste spawnovali vozilo: ' .. vehicleModel,
-                    type = 'success'
-                })
             else
-                lib.notify({
-                    title = 'Greška',
-                    description = 'Nije moguće spawnovati vozilo!',
-                    type = 'error'
-                })
+              print('Error while trying to spawn vehicle')
             end
         end)
     else
         return
-        lib.notify({
-            title = 'Greška',
-            description = 'Spawnpoint je zauzet!',
-            type = 'error'
-        })
+        sendNotification("error", locale('spawnpoint_not_clear'), 5000)
     end
 end)
-
 RegisterCommand(Config.reloadGarages, function()
     if source == 0 then
     TriggerServerEvent('reloadgarages', jobName)
