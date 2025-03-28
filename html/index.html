@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FiveM Admin Meni</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Ops+One&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body style="display: none;">
+    <div class="container" id="job-manager">
+        <button id="closeBtn" class="closeBtn">Close</button>
+        <div id="notification" style="display: none;">
+            <p id="message"></p>
+        </div>
+        <div class="wrapper">
+          
+
+            <div class="content">
+
+                <section id="job-list" class="section">
+                    <div class="search-container">
+                        <input type="text" id="searchInput" placeholder="Search organization by name" onkeyup="searchJob()">
+                    </div>
+                    <button class="add-job-btn" onclick="openAddJobModal()"> 
+                        <span class="plus-icon">+</span> Add Job
+                    </button>
+                    <div id="jobsList" class="jobs-list">
+                        <!-- js -->
+                    </div>
+                </section>
+
+                  <div id="jobModal" class="modal">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h2>Add Job</h2>
+                            <span class="close" onclick="closeAddJobModal()">&times;</span>
+                        </div>
+                        <div class="addjob-modal-body">
+                            <div class="input-group">
+                                <label for="jobId">Job name (id)</label>
+                                <input type="text" id="jobId" placeholder="Job name">
+                            </div>
+                            <div class="input-group">
+                                <label for="jobLabel">Job label</label>
+                                <input type="text" id="jobLabel" placeholder="Job Label">
+                            </div>
+                            <div class="input-group">
+                                <label for="whitelisted">Whitelisted:</label>
+                                <select id="whitelisted" name="whitelisted">
+                                    <option value="1">Yes</option>
+                                    <option value="0">No</option>
+                                </select>
+                            </div>                            
+                        </div>
+                        <div class="addjob-modal-footer">
+                            <button id="addjob" class="action-btn" onclick="addJob()">Submit</button>
+                        </div>
+                    </div>
+                </div>
+
+ <div id="EditJob" class="EditJob-modal" style="display:none;">
+    <div class="modal-content">
+    <span class="close-btn" onclick="closeEditJob()">&times;</span>
+      <h2 id="EditJobTitle"></h2>
+      <div class="button-container">
+         <button id="addrank" class="action-btn">Add rank</button>       
+            <button id="editmarkers" class="action-btn">Edit markers</button>
+            <button id="editstashesbutton" class="action-btn">Edit stashes</button>
+            <button id="deletejob" class="action-btn">Delete job</button>
+    </div>
+
+      <div id="job-ranks-container">
+        <div id="job-ranks-list">
+            <table class="table-style">
+                <thead>
+                    <tr>
+                        <th>Grade</th>
+                        <th>Name</th>
+                        <th>Label</th>
+                        <th>Salary</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="job-ranks-body">
+                    <!-- js -->
+                </tbody>
+            </table>
+        </div>
+      </div>
+      <div class="button-container">
+      <button class="action-btn" onclick="EditJobModalClose()">Close</button>
+      <button id="save-rank-changes" class="action-btn" onclick="saveJobGrades()">Save</button>
+      </div>
+    </div>
+  </div>
+
+     <div id="addrank-modal" class="addrank">
+    <div class="modal-content">
+        <div class="close" id="closeAddRankModal" onclick="closeAddRankModal()">&times;</div> 
+        <table class="table-style">
+            <thead>
+                <tr>
+                    <th>Job</th>
+                    <th>Grade</th>
+                    <th>Name</th>
+                    <th>Label</th>
+                    <th>Salary</th>
+                    <th>Action</th>
+                </tr>
+            </thead>   
+            <tbody id="rank-table-body">
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td><span id="selectedJobName"></span></td>
+                    <td><input type="number" id="gradeInput" placeholder="Grade"></td>
+                    <td><input type="text" id="nameInput" placeholder="Name"></td>
+                    <td><input type="text" id="labelInput" placeholder="Label"></td>
+                    <td><input type="number" id="salaryInput" placeholder="Salary"></td>
+                    <td><button class="confirm-btn" onclick="addRank()">Add</button></td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+
+<div id="allmarkers" class="EditJob-modal" style="display:none;">
+    <div class="modal-content">
+      <h2 id="allmarkers-title"></h2>
+      <div class="button-container">
+        <button id="addgarage" class="action-btn">Add garage</button>       
+    </div>
+
+    <div id="job-garages-container">
+        <h3>Available Garages</h3>
+        <div id="job-garages-list"></div>
+    </div>
+    
+      <div class="button-container">
+      <button class="action-btn" onclick="closeEditmarkers()">Close</button>
+      <button id="save-rank-changes" class="action-btn" onclick="saveJobGrades()">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="edit-garage-modal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <h2 id="editgarages-title">Javascript</h2>
+        <label>Garage id: <input type="number" id="garage-id" readonly></label>
+        <label>Name: <input type="text" id="garage-name"></label>
+        <label>Location: <input type="text" id="garage-location"></label>
+        <label>Spawn location: <input type="text" id="spawn-location"></label>
+        <div class="input-group">
+            <label for="garagevehicles">Garage vehicles</label>
+            <button id="addnewgarageeditvehicles" class="action-btn">Edit vehicles</button>
+        </div>
+        <label for="garagetype">Garage type:</label>
+        <select id="garagetype" name="garagetype" required>
+            <option value="car">Vehicle</option>
+            <option value="helicopter">Helicopter</option>
+            <option value="boat">Boat</option>
+        </select>
+    </select>
+    <label for="garagetype">Garage blip:</label>
+    <select id="garageblip" name="garageblip" required>
+        <option value="1">Show blip</option>
+        <option value="0">Don't show</option>
+    </select>       
+        <div class="button-container">
+            <button id="close-garage-modal" class="action-btn">Close</button>
+            <button id="save-garage" class="action-btn" onclick="saveGarageChanges()">Save</button>
+        </div>
+    </div>
+</div>
+
+  
+<div id="markers-container" class="addrank">
+    <div class="modal-content">
+        <div id="garage-header" class="modal-header">
+            <h2>Edit garages</h2>
+            <span class="close" onclick="closeEditmarkers()">&times;</span>
+        </div>
+        <div class="addjob-modal-body">
+            <div class="input-group">
+                <label for="garagename">Garage name</label>
+                <input type="text" id="garagename" placeholder="Garage name">
+            </div>
+            <div class="input-group">
+                <label for="vehiclespawnercoords">vehicle spawner coords</label>
+                <input type="number" id="vehiclespawnercoords" placeholder="Coords">
+            </div>
+            <div class="input-group">
+                <label for="whitelisted">Whitelisted:</label>
+                <select id="whitelisted" name="whitelisted">
+                    <option value="1">Yes</option>
+                    <option value="0">No</option>
+                </select>
+            </div>                            
+        </div>
+        <div class="addjob-modal-footer">
+            <button id="addjob" class="action-btn" onclick="addJob()">Submit</button>
+        </div>
+    </div>
+</div>
+
+
+<div id="addGarageContainer" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Add new garage</h2>
+            <span id="addnewgarageclose" class="close" onclick="closeAddGarageForm()">&times;</span>
+        </div>
+        <div class="addjob-modal-body">
+            <div class="input-group">
+                <label for="newgaragename">Garage name</label>
+                <input type="text" id="newgaragename" placeholder="Garage name">
+            </div>
+            <div class="input-group">
+                <label for="garagelocation">Garage Location</label>
+                <input type="text" id="garagelocation" placeholder="e.g., 215.4, -810.2, 30.5">
+            </div>
+            <div class="input-group">
+                <label for="spawnLocation">Spawn vehicle location</label>
+                <input type="text" id="spawnLocation" placeholder="e.g., 220.1, -800.5, 31.2">
+            </div>
+            <div class="input-group">
+                <label for="garagevehicles">Garage vehicles</label>
+                <button id="editvehicles" class="action-btn">Edit vehicles</button>
+            </div>
+    
+            <label for="garagetype">Garage type:</label>
+            <select id="garagetype" name="garagetype" required>
+                <option value="car">Vehicle</option>
+                <option value="helicopter">Helicopter</option>
+                <option value="boat">Boat</option>
+            </select>
+            <label for="garageblip">Garage blip:</label>
+            <select id="garageblip" name="garageblip" required>
+                <option value="1">Show blip</option>
+                <option value="0">Don't show</option>
+            </select>                         
+        </div>
+        <div class="addjob-modal-footer">
+            <button id="addjob" class="action-btn" onclick="addNewGarage()">Submit</button>
+        </div>
+    </div>
+</div>
+
+<div id="editvehiclesmodal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Manage vehicles</h2>
+            <span class="close" onclick="closeEditVehiclesModal()">&times;</span>
+        </div>
+        <div class="addjob-modal-body">
+            <div class="input-group">
+                <label for="addnewvehicle">Vehicle name</label>
+                <input type="text" id="addnewvehicle" placeholder="Vehicle name">
+            </div>          
+            <div id="vehicle-list"></div>        
+        </div>  
+    </div>
+</div>
+
+<div id="editstashes" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Edit stashes</h2>
+            <span id="editstashesclose" class="close" onclick="closeEditStashes()">&times;</span>
+        </div>
+        <div class="addjob-modal-body">
+            <div class="input-group">
+                <label for="stashlocation">Edit stash Location</label>
+                <input type="text" id="stashlocation" placeholder="e.g., 215.4, -810.2, 30.5">
+            </div>    
+            <div class="input-group">
+                <label for="stashCapacity">Edit stash capacity</label>
+                <input type="text" id="stashCapacity" placeholder="Stash capacity in grams">
+            </div>   
+            <div class="input-group">
+                <label for="stashSlots">Edit stash slots</label>
+                <input type="number" id="stashSlots" placeholder="Number of slots">
+            </div>    
+        </div>
+        <div class="addjob-modal-footer">
+            <button id="saveStashButton" class="action-btn">Submit</button>
+        </div>
+    </div>
+</div>
+
+    <script src="script.js"></script>
+</body>
+</html>
