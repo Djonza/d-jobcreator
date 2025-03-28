@@ -4,7 +4,7 @@ requirements -
 es_extended
 ox_lib
 ox_target
-oxysql
+oxmysql
 
 For suggestions or support check out our Discord!:
 
