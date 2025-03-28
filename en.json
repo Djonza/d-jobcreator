@@ -1,0 +1,31 @@
+{
+    "no_permissions": "You do not have access to this command",
+    "no_job_found": "Job name was not found",
+    "no_data_received": "No data has been received",
+    "locations_invalid": "Locations are not valid",
+    "spawnpoint_not_clear": "Spawnpoint is not clear",
+    "model_doesnt_exist": "Vehicle model has not been found",
+    "job_added": "New job added successfully",
+    "job_exists": "Job with the same name or label already exists",
+    "job_deleted_failed": "Failed to delete job",
+    "job_deleted_garages_failed": "Failed to delete data for garages or not found",
+    "job_deleted": "Job has been successfully deleted",
+    "add_job_failed": "Failed to add new job",
+    "job_grade_added": "Successfully added job grade",
+    "job_grade_added_failed": "Failed to add job grade",
+    "job_grades_updated": "All job grades have been updated successfully",
+    "job_grade_update_failed": "Failed to update job grade",
+    "job_grade_name_exists": "Grade with the same name already exists",
+    "job_grade_exists": "Grade with the same value already exists",
+    "job_grade_insert_failed": "Failed to insert into job_grades",
+    "job_grade_deleted": "Successfully deleted job grade",
+    "job_grade_deleted_failed": "Failed to delete job grade",
+    
+
+    "garage_added": "New garage has been successfully aded.",
+    "garage_add_error": "There was an error while trying to add new garage, please contant support",
+    "garage_updated": "Garage has been updated successfully",
+    "garage_update_error": "There was an error while trying to update garage, please contact support",
+    "garage_deleted": "Garage has been successfully deleted.",
+    "garage_deleted_error": "There was an error trying to delete garage, please contact support"
+  }
