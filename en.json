@@ -20,8 +20,6 @@
     "job_grade_insert_failed": "Failed to insert into job_grades",
     "job_grade_deleted": "Successfully deleted job grade",
     "job_grade_deleted_failed": "Failed to delete job grade",
-    
-
     "garage_added": "New garage has been successfully aded.",
     "garage_add_error": "There was an error while trying to add new garage, please contant support",
     "garage_updated": "Garage has been updated successfully",
